@@ -8,24 +8,28 @@ using Microsoft.EntityFrameworkCore;
 using Twenty.Data;
 using Twenty.Data.Domain;
 
-namespace Twenty.Controllers
+namespace Twenty.Areas.Administrators.Controllers
 {
-    public class TeamsController : Controller
+    [Area("Administrators")]
+    [Route("[area]/[controller]/[action]")]
+    public class BetsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TeamsController(ApplicationDbContext context)
+        public BetsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Teams
+        [HttpGet("/[area]/[controller]")]
+        // GET: Bets
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Teams.ToListAsync());
+            var applicationDbContext = _context.Bets.Include(b => b.Match).Include(b => b.Winner);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Teams/Details/5
+        // GET: Bets/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -33,39 +37,45 @@ namespace Twenty.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams
+            var bet = await _context.Bets
+                .Include(b => b.Match)
+                .Include(b => b.Winner)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (team == null)
+            if (bet == null)
             {
                 return NotFound();
             }
 
-            return View(team);
+            return View(bet);
         }
 
-        // GET: Teams/Create
+        // GET: Bets/Create
         public IActionResult Create()
         {
+            ViewData["MatchId"] = new SelectList(_context.Matches, "Id", "Id");
+            ViewData["WinnerId"] = new SelectList(_context.Teams, "Id", "Id");
             return View();
         }
 
-        // POST: Teams/Create
+        // POST: Bets/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Nickname,Founded,Website,Logo,Record,Id,Created,Updated")] Team team)
+        public async Task<IActionResult> Create([Bind("Title,Description,WinningOdds,StartDate,CloseDate,IsLive,MatchId,WinnerId,Id,Created,Updated")] Bet bet)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(team);
+                _context.Add(bet);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(team);
+            ViewData["MatchId"] = new SelectList(_context.Matches, "Id", "Id", bet.MatchId);
+            ViewData["WinnerId"] = new SelectList(_context.Teams, "Id", "Id", bet.WinnerId);
+            return View(bet);
         }
 
-        // GET: Teams/Edit/5
+        // GET: Bets/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -73,22 +83,24 @@ namespace Twenty.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams.FindAsync(id);
-            if (team == null)
+            var bet = await _context.Bets.FindAsync(id);
+            if (bet == null)
             {
                 return NotFound();
             }
-            return View(team);
+            ViewData["MatchId"] = new SelectList(_context.Matches, "Id", "Id", bet.MatchId);
+            ViewData["WinnerId"] = new SelectList(_context.Teams, "Id", "Id", bet.WinnerId);
+            return View(bet);
         }
 
-        // POST: Teams/Edit/5
+        // POST: Bets/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Name,Nickname,Founded,Website,Logo,Record,Id,Created,Updated")] Team team)
+        public async Task<IActionResult> Edit(long id, [Bind("Title,Description,WinningOdds,StartDate,CloseDate,IsLive,MatchId,WinnerId,Id,Created,Updated")] Bet bet)
         {
-            if (id != team.Id)
+            if (id != bet.Id)
             {
                 return NotFound();
             }
@@ -97,12 +109,12 @@ namespace Twenty.Controllers
             {
                 try
                 {
-                    _context.Update(team);
+                    _context.Update(bet);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TeamExists(team.Id))
+                    if (!BetExists(bet.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +125,12 @@ namespace Twenty.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(team);
+            ViewData["MatchId"] = new SelectList(_context.Matches, "Id", "Id", bet.MatchId);
+            ViewData["WinnerId"] = new SelectList(_context.Teams, "Id", "Id", bet.WinnerId);
+            return View(bet);
         }
 
-        // GET: Teams/Delete/5
+        // GET: Bets/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -124,30 +138,32 @@ namespace Twenty.Controllers
                 return NotFound();
             }
 
-            var team = await _context.Teams
+            var bet = await _context.Bets
+                .Include(b => b.Match)
+                .Include(b => b.Winner)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (team == null)
+            if (bet == null)
             {
                 return NotFound();
             }
 
-            return View(team);
+            return View(bet);
         }
 
-        // POST: Teams/Delete/5
+        // POST: Bets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var team = await _context.Teams.FindAsync(id);
-            _context.Teams.Remove(team);
+            var bet = await _context.Bets.FindAsync(id);
+            _context.Bets.Remove(bet);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TeamExists(long id)
+        private bool BetExists(long id)
         {
-            return _context.Teams.Any(e => e.Id == id);
+            return _context.Bets.Any(e => e.Id == id);
         }
     }
 }

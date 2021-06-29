@@ -64,17 +64,7 @@ namespace Twenty.Data
                 .HasForeignKey(match => match.WinnerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<ApplicationRole>().HasData(new List<ApplicationRole>
-            {
-                new ApplicationRole {
-                    Name = "Administrator",
-                    NormalizedName = "ADMINISTRATOR"
-                },
-                new ApplicationRole {
-                    Name = "User",
-                    NormalizedName = "USER"
-                },
-            });
+            builder.SeedAdmin();
         }
 
         public override int SaveChanges()

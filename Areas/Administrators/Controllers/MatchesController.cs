@@ -8,8 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Twenty.Data;
 using Twenty.Data.Domain;
 
-namespace Twenty.Controllers
+namespace Twenty.Areas.Administrators.Controllers
 {
+    [Area("Administrators")]
+    [Route("[area]/[controller]/[action]")]
     public class MatchesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,6 +21,7 @@ namespace Twenty.Controllers
             _context = context;
         }
 
+        [HttpGet("/[area]/[controller]")]
         // GET: Matches
         public async Task<IActionResult> Index()
         {

@@ -5,7 +5,7 @@ namespace Twenty.Data.Domain
 {
     public class Team : Entity
     {
-       public string Name { get; set; }
+        public string Name { get; set; }
 
         public string Nickname { get; set; }
 

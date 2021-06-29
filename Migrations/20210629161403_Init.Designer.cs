@@ -9,8 +9,8 @@ using Twenty.Data;
 namespace Twenty.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210629140439_Start")]
-    partial class Start
+    [Migration("20210629161403_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -382,15 +382,15 @@ namespace Twenty.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "81d1e7d2-8013-42fb-ba19-a27bd3ac0dfc",
-                            ConcurrencyStamp = "83ae4a5e-b98f-4a45-81be-c2f683ff0db5",
+                            Id = "54570c7c-baae-47ea-9e67-5ed5f9c07959",
+                            ConcurrencyStamp = "5fd27354-c471-4a1f-8b5b-958d21050294",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "f5875a57-5698-46fc-b207-a87a45c5c9f0",
-                            ConcurrencyStamp = "70c0493a-1578-4969-bde1-e4d6dcd46d77",
+                            Id = "62ae0b19-e426-4c3a-9123-567b0354acbc",
+                            ConcurrencyStamp = "7c7d8e95-7c81-46b5-81e8-e5cb30f84798",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -470,6 +470,26 @@ namespace Twenty.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "773a58c0-eee3-4076-bcc4-04be82a4bc97",
+                            AccessFailedCount = 0,
+                            Age = 0,
+                            ConcurrencyStamp = "de9461a6-d27e-4d80-918c-0568ff0ac02b",
+                            Email = "sudo@local.com",
+                            EmailConfirmed = false,
+                            FullName = "Super User",
+                            IsDeleted = false,
+                            IsOnline = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEFjzD3hC7sIttmcaX8H85Qn82vWnbjP0OrQ/IEr76iN2Z0LZYmJAeSPq4tjaNS7bXg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "00a02507-335e-49ce-a8a6-e962ef01fd54",
+                            TwoFactorEnabled = false,
+                            UserName = "sudo"
+                        });
                 });
 
             modelBuilder.Entity("Twenty.Data.Identity.ApplicationUserRole", b =>
@@ -485,6 +505,13 @@ namespace Twenty.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "773a58c0-eee3-4076-bcc4-04be82a4bc97",
+                            RoleId = "54570c7c-baae-47ea-9e67-5ed5f9c07959"
+                        });
                 });
 
             modelBuilder.Entity("Twenty.Data.Identity.Member", b =>
