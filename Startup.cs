@@ -57,6 +57,7 @@ namespace Twenty
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IEmailSender, EmailSender>();
             // services.AddTransient<INotificationRepository, NotificationRepository>();
+            
             services.AddSession();
             services.AddControllersWithViews().AddNewtonsoftJson(opt => 
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

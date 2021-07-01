@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Twenty.Data.Identity
 {
-    public class Profile : Entity
+    public abstract class Profile : Entity
     {
         public string IdentityId { get; set; }
         public ApplicationUser Identity { get; set; }  // navigation property

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Twenty.Data.Identity;
 
 namespace Twenty.Data.Domain
 {
@@ -8,23 +9,18 @@ namespace Twenty.Data.Domain
         public string Name { get; set; }
 
         public string Nickname { get; set; }
-
-        public DateTime Founded { get; set; }
-
-        public string Website { get; set; }
         
         public string Logo { get; set; }
 
-        public string Record { get; set; }
+        public string Record { get; set; } = "0-0";
 
-        public ICollection<UserBet> UserBets { get; set; } = new List<UserBet>();
+        public long OrganizerId { get; set; }
+        public Player Organizer { get; set; }
 
-        public ICollection<Player> Players { get; set; } = new List<Player>();
+        public ICollection<TeamPlayer> Players { get; set; } = new List<TeamPlayer>();
 
         public ICollection<Match> Wins { get; set; } = new List<Match>();
 
-        public ICollection<Match> AwayMatches { get; set; } = new List<Match>();
-
-        public ICollection<Match> HomeMatches { get; set; } = new List<Match>();
+        public ICollection<MatchTeam> Matches { get; set; } = new List<MatchTeam>();
     }
 }

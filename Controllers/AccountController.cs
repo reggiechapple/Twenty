@@ -234,16 +234,16 @@ namespace Twenty.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var role = await _roleManager.FindByNameAsync("User");
+                    var role = await _roleManager.FindByNameAsync("Player");
                     
                     if (role != null)
                     {
                         await this._userManager.AddToRoleAsync(user, role.Name);
-                        Member member = new Member
+                        Player player = new Player
                         {
                             IdentityId = user.Id
                         };
-                        _context.Add(member);
+                        _context.Add(player);
                         await _context.SaveChangesAsync();
 
                         _logger.LogInformation($"User has successfully been added to role: {role.Name}");

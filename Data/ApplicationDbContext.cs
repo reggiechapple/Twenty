@@ -15,14 +15,16 @@ namespace Twenty.Data
         public ApplicationDbContext(DbContextOptions options) : base(options)
         { }
 
-        public DbSet<Member> Members { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Bet> Bets { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Question> Questions { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Team> Teams { get; set; }
-        public DbSet<UserBet> UserBets { get; set; }
+        public DbSet<Topic> Topics { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<MatchTeam> MatchTeams { get; set; }
+        public DbSet<TeamPlayer> TeamPlayers { get; set; }
+        public DbSet<PlayerChoice> PlayerChoices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -43,19 +45,58 @@ namespace Twenty.Data
                     .IsRequired();
             });
 
-            builder
-                .Entity<Match>()
-                .HasOne(match => match.AwayTeam)
-                .WithMany(team => team.AwayMatches)
-                .HasForeignKey(match => match.AwayTeamId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<MatchTeam>(team =>
+            {
+                team.HasKey(mt => new { mt.MatchId, mt.TeamId });
 
-            builder
-                .Entity<Match>()
-                .HasOne(match => match.HomeTeam)
-                .WithMany(team => team.HomeMatches)
-                .HasForeignKey(match => match.HomeTeamId)
-                .OnDelete(DeleteBehavior.Restrict);
+                team.HasOne(mt => mt.Match)
+                    .WithMany(m => m.Teams)
+                    .HasForeignKey(mt => mt.MatchId)
+                    .IsRequired();
+
+                team.HasOne(mt => mt.Team)
+                    .WithMany(m => m.Matches)
+                    .HasForeignKey(mt => mt.TeamId)
+                    .IsRequired();
+            });
+
+            builder.Entity<TeamPlayer>(team =>
+            {
+                team.HasKey(tp => new { tp.PlayerId, tp.TeamId });
+
+                team.HasOne(tp => tp.Player)
+                    .WithMany(p => p.Teams)
+                    .HasForeignKey(tp => tp.PlayerId)
+                    .IsRequired();
+
+                team.HasOne(tp => tp.Team)
+                    .WithMany(t => t.Players)
+                    .HasForeignKey(tp => tp.TeamId)
+                    .IsRequired();
+            });
+
+            builder.Entity<PlayerChoice>(choice =>
+            {
+                choice.HasKey(pc => new { pc.PlayerId, pc.ChoiceId });
+
+                choice.HasOne(pc => pc.Player)
+                    .WithMany(p => p.Choices)
+                    .HasForeignKey(pc => pc.PlayerId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
+
+                choice.HasOne(pc => pc.Choice)
+                    .WithMany(c => c.PlayerChoices)
+                    .HasForeignKey(pc => pc.ChoiceId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
+
+                choice.HasOne(pc => pc.Game)
+                    .WithMany(g => g.PlayerChoices)
+                    .HasForeignKey(pc => pc.GameId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             builder
                 .Entity<Match>()
@@ -63,6 +104,30 @@ namespace Twenty.Data
                 .WithMany(team => team.Wins)
                 .HasForeignKey(match => match.WinnerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Question>()
+                .HasMany(q => q.Choices)
+                .WithOne(c => c.Question)
+                .HasForeignKey(c => c.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            builder
+                .Entity<Player>()
+                .HasMany(p => p.TeamsOrganized)
+                .WithOne(t => t.Organizer)
+                .HasForeignKey(t => t.OrganizerId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            builder
+                .Entity<Game>()
+                .HasMany(g => g.Questions)
+                .WithOne(q => q.Game)
+                .HasForeignKey(q => q.GameId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
             builder.SeedAdmin();
         }
@@ -115,6 +180,8 @@ namespace Twenty.Data
             }
             return (await base.SaveChangesAsync(true, cancellationToken));
         }
+
+        public DbSet<Twenty.Data.Domain.Choice> Choice { get; set; }
         
 
     }

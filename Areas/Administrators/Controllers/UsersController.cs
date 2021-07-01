@@ -7,11 +7,12 @@ using Twenty.Data.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Twenty.Areas.Administrators.Controllers
 {
     
-    // [Authorize(Roles = "admin")]
+    [Authorize(Roles = "Administrator")]
     [Area("Administrators")]
     [Route("[area]/[controller]/[action]")]
     public class UsersController : Controller
@@ -68,7 +69,7 @@ namespace Twenty.Areas.Administrators.Controllers
             {
                 await _userManager.CreateAsync(user, model.Password);
                 
-                _context.Add(new Member
+                _context.Add(new Player
                 {
                     IdentityId = user.Id
                 });
