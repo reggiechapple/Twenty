@@ -122,7 +122,7 @@ namespace Twenty.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("ParentId")
+                    b.Property<long?>("ParentId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Updated")
@@ -415,17 +415,17 @@ namespace Twenty.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "45d5fb1d-4fdf-44e2-98e3-e42de9b0f5c7",
-                            ConcurrencyStamp = "0ebadb66-702f-4db2-a2ba-d5ae69151baf",
+                            Id = "3ec47dbe-f8bd-427b-8af4-88750ab27b50",
+                            ConcurrencyStamp = "6ce82a67-e061-48cc-9198-0f1d64b75a95",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "d6a8e09c-a907-4dd8-9775-2ab694beec8e",
-                            ConcurrencyStamp = "5adeac60-661b-4aed-b984-51edd7f5e55e",
-                            Name = "User",
-                            NormalizedName = "Player"
+                            Id = "fe66cad5-971c-4037-aadb-6d1a382a359d",
+                            ConcurrencyStamp = "070dd3ec-dac8-4968-8408-75cd2eeea691",
+                            Name = "Player",
+                            NormalizedName = "PLAYER"
                         });
                 });
 
@@ -507,10 +507,10 @@ namespace Twenty.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "89ba997a-0bd9-4af3-859b-1b8f43391cdd",
+                            Id = "e7032448-c632-4629-9ba4-ec833f675f40",
                             AccessFailedCount = 0,
                             Age = 0,
-                            ConcurrencyStamp = "08b4c015-ffe9-4a85-b67f-5343841aa6e6",
+                            ConcurrencyStamp = "41107390-48e6-4a5c-a4ad-f89c25346af9",
                             Email = "sudo@local.com",
                             EmailConfirmed = true,
                             FullName = "Super User",
@@ -519,9 +519,9 @@ namespace Twenty.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SUDO@LOCAL.COM",
                             NormalizedUserName = "SUDO",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEBUeCn/JwTwkTIn/xFHOnbcOCrQ1hQS4yF59B7n3p2ZvA+WB9ZYfgjVPaSwcS4Rmw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMIkrJZhfO8t9YAzz0sv8whWEScOe9DELrERhcEK9nOcQLR8+YQhiuUOfux2y7lpVQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8c572bd3-0b16-447f-ab42-6581671ed06b",
+                            SecurityStamp = "4d8f2966-e07b-48d3-9ec1-bf8f553c61cb",
                             TwoFactorEnabled = false,
                             UserName = "sudo"
                         });
@@ -544,8 +544,8 @@ namespace Twenty.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "89ba997a-0bd9-4af3-859b-1b8f43391cdd",
-                            RoleId = "45d5fb1d-4fdf-44e2-98e3-e42de9b0f5c7"
+                            UserId = "e7032448-c632-4629-9ba4-ec833f675f40",
+                            RoleId = "3ec47dbe-f8bd-427b-8af4-88750ab27b50"
                         });
                 });
 
@@ -617,9 +617,7 @@ namespace Twenty.Migrations
                 {
                     b.HasOne("Twenty.Data.Domain.Category", "Parent")
                         .WithMany("SubCategories")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentId");
                 });
 
             modelBuilder.Entity("Twenty.Data.Domain.Choice", b =>

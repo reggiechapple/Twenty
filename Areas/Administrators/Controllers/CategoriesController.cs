@@ -53,7 +53,7 @@ namespace Twenty.Areas.Administrators.Controllers
         // GET: Categories/Create
         public IActionResult Create()
         {
-            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Id");
+            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
@@ -62,7 +62,7 @@ namespace Twenty.Areas.Administrators.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,ParentId,Id,Created,Updated")] Category category)
+        public async Task<IActionResult> Create([Bind("Name,Id,ParentId,Created,Updated")] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +70,7 @@ namespace Twenty.Areas.Administrators.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Id", category.ParentId);
+            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Name", category.ParentId);
             return View(category);
         }
 

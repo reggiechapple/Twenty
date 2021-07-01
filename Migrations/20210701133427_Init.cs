@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Twenty.Migrations
 {
-    public partial class Start : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,7 +60,7 @@ namespace Twenty.Migrations
                     Updated = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    ParentId = table.Column<long>(nullable: false)
+                    ParentId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -70,7 +70,7 @@ namespace Twenty.Migrations
                         column: x => x.ParentId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -444,22 +444,22 @@ namespace Twenty.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "45d5fb1d-4fdf-44e2-98e3-e42de9b0f5c7", "0ebadb66-702f-4db2-a2ba-d5ae69151baf", "Administrator", "ADMINISTRATOR" });
+                values: new object[] { "3ec47dbe-f8bd-427b-8af4-88750ab27b50", "6ce82a67-e061-48cc-9198-0f1d64b75a95", "Administrator", "ADMINISTRATOR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "d6a8e09c-a907-4dd8-9775-2ab694beec8e", "5adeac60-661b-4aed-b984-51edd7f5e55e", "User", "Player" });
+                values: new object[] { "fe66cad5-971c-4037-aadb-6d1a382a359d", "070dd3ec-dac8-4968-8408-75cd2eeea691", "Player", "PLAYER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Age", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "IsDeleted", "IsOnline", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "89ba997a-0bd9-4af3-859b-1b8f43391cdd", 0, 0, "08b4c015-ffe9-4a85-b67f-5343841aa6e6", "sudo@local.com", true, "Super User", false, false, false, null, "SUDO@LOCAL.COM", "SUDO", "AQAAAAEAACcQAAAAEEBUeCn/JwTwkTIn/xFHOnbcOCrQ1hQS4yF59B7n3p2ZvA+WB9ZYfgjVPaSwcS4Rmw==", null, false, "8c572bd3-0b16-447f-ab42-6581671ed06b", false, "sudo" });
+                values: new object[] { "e7032448-c632-4629-9ba4-ec833f675f40", 0, 0, "41107390-48e6-4a5c-a4ad-f89c25346af9", "sudo@local.com", true, "Super User", false, false, false, null, "SUDO@LOCAL.COM", "SUDO", "AQAAAAEAACcQAAAAEMIkrJZhfO8t9YAzz0sv8whWEScOe9DELrERhcEK9nOcQLR8+YQhiuUOfux2y7lpVQ==", null, false, "4d8f2966-e07b-48d3-9ec1-bf8f553c61cb", false, "sudo" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "UserId", "RoleId" },
-                values: new object[] { "89ba997a-0bd9-4af3-859b-1b8f43391cdd", "45d5fb1d-4fdf-44e2-98e3-e42de9b0f5c7" });
+                values: new object[] { "e7032448-c632-4629-9ba4-ec833f675f40", "3ec47dbe-f8bd-427b-8af4-88750ab27b50" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
