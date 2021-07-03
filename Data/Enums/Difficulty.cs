@@ -1,7 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Twenty.Data.Enums
 {
     public enum Difficulty
     {
-        Beginner, Intermediate, Advanced
+        [Display(Name = "Beginner")]
+        Beginner, 
+        [Display(Name = "Intermediate")]
+        Intermediate, 
+        [Display(Name = "Advanced")]
+        Advanced
     }
 }
